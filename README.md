@@ -23,7 +23,9 @@ JWTの文字列は以下のように構成されている。（[参考](https://
 | sessionStorage | XSS攻撃に合う可能性があるためここに保存してはいけない。タブを閉じると消える。 |
 | cookie | httpOnly Cookieに保存する。httpOnly CokkieだとJSからCokkieを参照できなくなるらしい。CSRF攻撃対策をする必要あり。 |
 
-JWTを認証で使いたいなら、セキュリティ面から、http-only cookiesにJWTトークンを保存しておくべき。でもそれだとsession idをhttp-only cookiesに保存しておくのと機能的にあんまり変わらない。（http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/)
+JWTを認証で使いたいなら、セキュリティ面から、http-only cookiesにJWTトークンを保存しておくべき。でもそれだとsession idをhttp-only cookiesに保存しておくのと機能的にあんまり変わらない。([参考]（http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/))
+
+いや、やっぱり認証にJWTは使うな。（[参考](https://qiita.com/NewGyu/items/0b3111b61405366a76c5))
 
 - [nyandora(nyandora). JWTは使うべきではない　〜 SPAにおける本当にセキュアな認証方式 〜. Qiita.](https://qiita.com/nyandora/items/8174891f52ec0ea15bc1)
 - [Shota Nukumizu. JWT認証のベストプラクティス 5選. Zenn.](https://zenn.dev/nameless_sn/articles/the_best_practice_of_jwt)
