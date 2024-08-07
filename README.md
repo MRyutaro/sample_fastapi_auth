@@ -41,3 +41,9 @@ JWTを認証で使いたいなら、セキュリティ面から、http-only cook
 認証についての参考記事
 
 - [Hiro-mi(ひ ろ). SPAのログイン認証のベストプラクティスがわからなかったのでわりと網羅的に研究してみた〜JWT or Session どっち？〜. Qiita.](https://qiita.com/Hiro-mi/items/18e00060a0f8654f49d6)
+
+fastapiでcookiesにデータを保存・取り出す方法
+
+- [FastAPIでCookieを保存する方法](https://liquids.dev/articles/17778473-418a-4422-94c1-ee10fb024869)
+- [FastAPIでCookieを受け取る方法](https://liquids.dev/articles/a8e9e8f7-0438-4f29-ae5b-d7537e3f2316)
+
