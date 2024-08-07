@@ -47,3 +47,6 @@ fastapiでcookiesにデータを保存・取り出す方法
 - [FastAPIでCookieを保存する方法](https://liquids.dev/articles/17778473-418a-4422-94c1-ee10fb024869)
 - [FastAPIでCookieを受け取る方法](https://liquids.dev/articles/a8e9e8f7-0438-4f29-ae5b-d7537e3f2316)
 
+> セッションIDの利用において、XSSを前提とするならHttpOnly Cookieであっても攻撃者はセッションを利用して攻撃可能（Cookieはブラウザが自動でリクエストに付加してしまうから）なのでWebStorageと大差がない
+
+http-only cookiesはオリジンを気にしないので、session idをcookiesに保存している状態で、もしめっちゃ似せたサイトにアクセスしてしまったらsession idを送信してしまうということか？それならSameSite=Strictにしておけば対策できるということ？
