@@ -28,6 +28,10 @@ JWTの文字列は以下のように構成されている。（[参考](https://
 - [nyandora(nyandora). JWTは使うべきではない　〜 SPAにおける本当にセキュアな認証方式 〜. Qiita.](https://qiita.com/nyandora/items/8174891f52ec0ea15bc1)
 - [Shota Nukumizu. JWT認証のベストプラクティス 5選. Zenn.](https://zenn.dev/nameless_sn/articles/the_best_practice_of_jwt)
 
+長い期間保持したいデータを管理するのにJWTを使うな。JWTトークンとsessionを組み合わせて使え。
+
+- [Stop using JWT for sessions. June 19, 2016. ](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/)
+
 一方で、クライアント側に渡すデータにユーザ情報を持たせず、サーバ側でユーザ情報を保持しておく方法もある。これはセッションidを使う方法。
 
 ![https://zenn.dev/swy/articles/0e8de582f4e7f3](/docs/images/image.png)
