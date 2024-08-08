@@ -48,3 +48,10 @@ fastapiでcookiesにデータを保存・取り出す方法
 > セッションIDの利用において、XSSを前提とするならHttpOnly Cookieであっても攻撃者はセッションを利用して攻撃可能（Cookieはブラウザが自動でリクエストに付加してしまうから）なのでWebStorageと大差がない
 
 http-only cookiesはオリジンを気にしないので、session idをcookiesに保存している状態で、もしめっちゃ似せたサイトにアクセスしてしまったらsession idを送信してしまうということか？それならSameSite=Strictにしておけば対策できるということ？
+
+セッションを使った認証は公式もやってなかったし、fastapi-sessionsっていうライブラリがあったけどメンテナンスされていなかった。
+自前でセッションを使った認証を開発することもできるけどあんまりよろしくない。
+
+だからセッションを使った認証をしたいのならFlask or Djangoを使った方がいい。
+
+ただFlaskはSwaggerの画面がなさそうだから結局Django REST Frameworkをバックエンドで使った方が良さそう。
