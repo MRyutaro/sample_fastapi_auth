@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Union
 
 import uvicorn
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Cookie, Depends, FastAPI, HTTPException, Response, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt
 from passlib.context import CryptContext
@@ -96,19 +96,15 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     return encoded_jwt
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: str = Cookie(None)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer error='invalid token'"}
     )
     try:
-        # トークンをデコードすることで、{ "sub": "johndoe" } のようなデータを取得できる
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        # create_access_tokenで設定したdataの内容を取得
         username: Any | None = payload.get("sub")
-        exp: Any | None = payload.get("exp")
-        print(f"get_current_user: {username=}, {exp=}")
         token_data = TokenData(username=username)
     except Exception:
         raise credentials_exception
@@ -134,7 +130,7 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 #   "token_type": "string"
 # }
 @app.post("/token")
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()) -> Token:
+async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(
         fake_users_db,
         form_data.username,
@@ -147,7 +143,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             headers={
                 "WWW-Authenticate": "Bearer error='incorrect username or password'"}
         )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires: timedelta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={
             "sub": user.username
@@ -155,7 +151,13 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         expires_delta=access_token_expires
     )
     # Reactとかで使う場合はレスポンスをlocalStorage, sessionStorage, cookieのどれかに保存しておくみたいな処理をすれば良い
-    return Token(access_token=access_token, token_type="bearer")
+
+    # cookiesにトークンを保存しておく
+    token: Token = Token(access_token=access_token, token_type="bearer")
+    expires: datetime = datetime.now(tz=timezone.utc) + access_token_expires
+    response.set_cookie(key="token", value=token.access_token, expires=expires, httponly=True)
+
+    return token
 
 
 # ユーザー情報を取得する
