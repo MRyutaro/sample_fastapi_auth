@@ -1,9 +1,7 @@
 # sample_fastapi_auth
 ## 必要なライブラリのインストール
 
-- `pip install fastapi`
-- `pip install python-jose[cryptography]`
-- `pip install passlib[bcrypt]`
+- `pip install fastapi python-jose[cryptography] passlib[bcrypt] uvicorn python-multipart`
 
 ## メモ
 
