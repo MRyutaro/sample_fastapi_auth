@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta, timezone
-from typing import Union
-import uvicorn
+from typing import Any, Union
 
-from jose import jwt
+import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
 
@@ -65,7 +65,7 @@ def get_password_hash(password):
 
 
 # DBからユーザー情報を取得する
-def get_user(db, username: str):
+def get_user(db, username: str | None):
     if username in db:
         user_dict = db[username]
         return UserInDB(**user_dict)
@@ -106,8 +106,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         # トークンをデコードすることで、{ "sub": "johndoe" } のようなデータを取得できる
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         # create_access_tokenで設定したdataの内容を取得
-        username: str = payload.get("sub")
-        exp: float = payload.get("exp")
+        username: Any | None = payload.get("sub")
+        exp: Any | None = payload.get("exp")
         print(f"get_current_user: {username=}, {exp=}")
         token_data = TokenData(username=username)
     except Exception:
